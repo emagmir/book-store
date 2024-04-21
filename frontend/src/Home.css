@@ -1,0 +1,14 @@
+.green-header {
+    background-color: green;
+    color: white; /* Set text color to white for better contrast */
+  }
+
+.wallpaper {
+    background-image: url('bookshelf.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.custom-card {
+    background-color: #F5F5DC; /* Change to the desired background color */
+}
