@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from connection import userdb
+import warnings
 
 app = FastAPI()
 
@@ -26,6 +27,9 @@ def init_app():
     app.include_router(user_profile.router)
     app.include_router(user_auth.router)
     app.include_router(book_endpoints.router)
+
+    warnings.simplefilter(action='ignore', category=FutureWarning)
+    warnings.simplefilter(action='ignore', category=UserWarning)
 
     return app
 

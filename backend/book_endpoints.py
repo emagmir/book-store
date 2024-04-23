@@ -28,7 +28,7 @@ async def upload_book(input_file: UploadFile = File(...), book_title : str = For
 
         if itemdb.find_one({"hash" : file_hash}):
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Duplicate file detected.")
-        
+
         file_id = fs.put(content, filename=input_file.filename)
         file_id_str = str(file_id)
 
@@ -46,7 +46,7 @@ async def upload_book(input_file: UploadFile = File(...), book_title : str = For
         return {"message": "File uploaded successfully."}
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
-    
+
 @router.get("/", status_code=status.HTTP_200_OK, response_model=list[Book])
 async def retrieve_books():
     all_items = itemdb.find({}, {"_id" : 0 ,"book_title": 1, "author": 1, "genre": 1, "file_id" : 1})  # Retrieve only specific fields
@@ -54,7 +54,7 @@ async def retrieve_books():
 
 @router.get("/{id}", status_code=status.HTTP_200_OK, response_description = "Retrieve a single item", response_model=None)
 async def retrieve_book(id: str):
-    
+
     retrieved_item = itemdb.find_one({"file_id": id})
     # Check if the item exists
     if retrieved_item:
