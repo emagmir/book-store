@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bookstore-be-dep
+  labels:
+    app: bookstore-be-dep
+    environment: production
+spec:
+  selector:
+    matchLabels:
+      app: bookstore-be-dep
+  template:
+    metadata:
+      labels:
+        app: bookstore-be-dep
+    spec:
+      containers:
+      - name: bookstore-be
+        image: emagmir/book-store-be
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - name: bookstore-be-port
+          containerPort: 8000
