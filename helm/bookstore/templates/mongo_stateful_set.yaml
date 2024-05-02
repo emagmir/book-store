@@ -24,6 +24,9 @@ spec:
         volumeMounts:
         - name: mongovolume
           mountPath: /persistent_data
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        effect: "NoSchedule"
   volumeClaimTemplates:
   - metadata:
       name: mongovolume

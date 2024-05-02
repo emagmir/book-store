@@ -19,7 +19,7 @@ spec:
         image: emagmir/book-store-fe
         resources:
           limits:
-            memory: "128Mi"
+            memory: "512Mi"
             cpu: "500m"
         ports:
         - name: bs-fe-port
