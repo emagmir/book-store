@@ -1,28 +1,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: bookstore-fe-dep
+  name: bs-fe-dep
   labels:
-    app: bookstore-fe-dep
+    app: bs-fe-dep
     environment: production
 spec:
   selector:
     matchLabels:
-      app: bookstore-fe-dep
+      app: bs-fe-dep
   template:
     metadata:
       labels:
-        app: bookstore-fe-dep
+        app: bs-fe-dep
     spec:
       containers:
-      - name: bookstore-fe
+      - name: bs-fe
         image: emagmir/book-store-fe
         resources:
           limits:
             memory: "128Mi"
             cpu: "500m"
         ports:
-        - name: bookstore-fe-port
+        - name: bs-fe-port
           containerPort: 3000
       tolerations:
       - key: "node-role.kubernetes.io/control-plane"

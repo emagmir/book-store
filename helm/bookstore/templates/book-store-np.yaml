@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: bookstore-fe-dep
+  name: bs-fe-dep
 spec:
   selector:
-    app: bookstore-fe-dep
+    app: bs-fe-dep
   ports:
   - port: 3000
     nodePort: 30008
-    targetPort: bookstore-fe-port
-    name: bookstore-fe-port-svc
+    targetPort: bs-fe-port
+    name: bs-fe-port-svc
     protocol: TCP
   type: NodePort
