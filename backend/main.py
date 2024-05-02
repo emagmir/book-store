@@ -6,7 +6,7 @@ import warnings
 app = FastAPI()
 
 origins = [
-    'https://localhost:3000'
+    '*'
 ]
 
 

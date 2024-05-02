@@ -1,13 +1,20 @@
 from pymongo import MongoClient
 
-db_addr = "172.17.0.2"
-db_ip = 27017
+# Specify the ClusterIP service name
+db_service_name = "mongodb-service"
 
+# Specify the port defined in your service
+db_port = 27017
 
-client = MongoClient(db_addr, db_ip)
+# Construct the connection string using the service name and port
+db_uri = f"mongodb://{db_service_name}:{db_port}"
+
+# Connect to the MongoDB service
+client = MongoClient(db_uri)
+
+# Access the databases and collections
 db1 = client.users
 db2 = client.items
 
 userdb = db1.myusers
-
 itemdb = db2.credentials

@@ -24,3 +24,6 @@ spec:
         ports:
         - name: bookstore-fe-port
           containerPort: 3000
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        effect: "NoSchedule"
