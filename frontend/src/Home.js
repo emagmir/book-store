@@ -20,7 +20,7 @@ export default function Home() {
   const handleDownload = (id) => {
     console.log('ID:', id);
     // Construct the download URL using the ID
-    const downloadUrl = `http://bookstore-be-dep:8000/items/${id}`;
+    const downloadUrl = `http://bs-be-dep:8000/items/${id}`;
   
     // Open the download URL in a new tab/window to trigger the download
     window.open(downloadUrl, '_blank');
@@ -35,7 +35,7 @@ export default function Home() {
   };
 
   const fetchEntries = async () => {
-    const response = await axios.get("http://bookstore-be-dep:8000/items/");
+    const response = await axios.get("http://bs-be-dep:8000/items/");
     setRetrievals(response.data)
     console.log('Retrievals:', response.data);
   };
@@ -49,7 +49,7 @@ export default function Home() {
 
     //  fetch data from get user api
     axios
-      .get("http://bookstore-be-dep:8000/users/", {
+      .get("http://bs-be-dep:8000/users/", {
         headers: { Authorization: token },
       })
       .then((response) => {
