@@ -5,14 +5,14 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: bookstore # has to match .spec.template.metadata.labels
-  serviceName: "mongo"
-  replicas: 1 # by default is 1
-  minReadySeconds: 10 # by default is 0
+      app: bookstore
+  serviceName: "mdb-service" # Corrected service name
+  replicas: 1
+  minReadySeconds: 10
   template:
     metadata:
       labels:
-        app: bookstore # has to match .spec.selector.matchLabels
+        app: bookstore
     spec:
       terminationGracePeriodSeconds: 10
       containers:

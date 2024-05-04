@@ -4,7 +4,7 @@ metadata:
   name: mdb-service
 spec:
   selector:
-    app: mongodb
+    app: bookstore # Corrected to match StatefulSet labels
   ports:
   - port: 27017
     name: mdb-port-svc
