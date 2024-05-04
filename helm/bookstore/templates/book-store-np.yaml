@@ -1,14 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: bs-fe-dep
+  name: bs-fe-lb
 spec:
   selector:
     app: bs-fe-dep
   ports:
-  - port: 3000
-    nodePort: 30008
-    targetPort: bs-fe-port
-    name: bs-fe-port-svc
-    protocol: TCP
-  type: NodePort
+    - port: 80  # Expose port 80 externally
+      targetPort: bs-fe-port
+  type: LoadBalancer
