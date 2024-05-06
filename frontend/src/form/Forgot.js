@@ -26,7 +26,7 @@ export default function Forgot(props) {
     event.preventDefault();
     console.log(forgotForm);
     await axios
-      .post("http://bs-be-dep:8000/auth/forgot-password", forgotForm)
+      .post("http://172.19.0.6:8000/auth/forgot-password", forgotForm)
       .then((response) => {
         toast.success(response.data.detail)
         setTimeout(()=>{

@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 
 # Specify the ClusterIP service name
-db_service_name = "mdb-service"
+db_service_name = "172.19.0.5"
 
 # Specify the port defined in your service
 db_port = 27017
