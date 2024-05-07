@@ -36,7 +36,7 @@ export default function Login(props) {
 
     // call api login
     await axios
-  .post("http://172.19.0.6:8000/auth/login", formData.toString(), {
+  .post("http://192.168.100.100:8000/auth/login", formData.toString(), {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
     }
