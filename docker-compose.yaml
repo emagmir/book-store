@@ -2,7 +2,7 @@ version: '3'
 services:
   mongodb:
     container_name: mongodb
-    image: mongo:latest
+    image: mongo:4.4.6
     networks:
       local-dep:
         ipv4_address: 172.19.0.5
@@ -39,9 +39,7 @@ services:
       - "80:80"
     networks:
       local-dep:
-        ipv4_address: 172.19.0.8
-    volumes:
-      - /projects/default.conf:/etc/nginx/nginx.conf:ro  # Mount custom Nginx configuration
+        ipv4_address: 172.19.0.8 # Mount custom Nginx configuration
     restart: always
 
 networks:
