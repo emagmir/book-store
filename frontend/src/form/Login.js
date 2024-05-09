@@ -47,8 +47,8 @@ export default function Login(props) {
     localStorage.setItem("auth_token", response.data.access_token);
     localStorage.setItem(
       "auth_token_type",
-      response.data.token_type
-    );
+      response.data.token_type);
+    localStorage.setItem("user_rights", response.data.admin);
 
     // add successfully notif
     toast.success(response.data.detail);
