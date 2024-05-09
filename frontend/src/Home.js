@@ -8,6 +8,7 @@ export default function Home() {
   const [user, setUser] = useState({});
   const [userRights, setUserRights] = useState(null);
   const [retrievals, setRetrievals] = useState([]);
+
   const [formData, setFormData] = useState({
     book_title: '',
     author: '',
@@ -26,7 +27,7 @@ export default function Home() {
   const handleDownload = (id) => {
     console.log('ID:', id);
     // Construct the download URL using the ID
-    const downloadUrl = `http://192.168.100.100:8000/items/${id}`;
+    const downloadUrl = `http://192.168.100.100/items/${id}`;
 
     // Open the download URL in a new tab/window to trigger the download
     window.open(downloadUrl, '_blank');
@@ -41,7 +42,7 @@ export default function Home() {
   };
 
   const fetchEntries = async () => {
-    const response = await axios.get("http://192.168.100.100:8000/items/");
+    const response = await axios.get("http://192.168.100.100/items/");
     setRetrievals(response.data)
     console.log('Retrievals:', response.data);
   };
@@ -61,7 +62,7 @@ export default function Home() {
 
     //  fetch data from get user api
     axios
-      .get("http://192.168.100.100:8000/users/", {
+      .get("http://192.168.100.100/users/", {
         headers: { Authorization: token },
       })
       .then((response) => {
@@ -101,7 +102,7 @@ const onSubmitForm = async () => {
       }
     };
 
-    const response = await axios.post('http://192.168.100.100:8000/items/', formDataToSend, config);
+    const response = await axios.post('http://192.168.100.100/items/', formDataToSend, config);
     console.log(response.data);
     // Handle success response
   } catch (error) {

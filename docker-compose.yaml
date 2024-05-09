@@ -9,7 +9,7 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - ./datadb:/data/db  # Mount local directory for MongoDB data
+      - /datadb:/data/db  # Mount local directory for MongoDB data
     restart: always
 
   backend:
@@ -41,7 +41,8 @@ services:
       local-dep:
         ipv4_address: 172.19.0.8
     volumes:
-      - /projects/default.conf:/etc/nginx/conf.d/default.conf:ro  # Mount custom Nginx configuration
+      - default.conf:/etc/nginx/conf.d/default.conf:ro  # Mount custom Nginx configuration
+      - nginx.conf:/etc/nginx/nginx.conf:ro
     restart: always
 
 networks:
