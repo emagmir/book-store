@@ -2,7 +2,7 @@ version: '3'
 services:
   mongodb:
     container_name: mongodb
-    image: mongo:4.4.6
+    image: mongo:latest
     networks:
       local-dep:
         ipv4_address: 172.19.0.5
@@ -41,9 +41,29 @@ services:
       local-dep:
         ipv4_address: 172.19.0.8
     volumes:
-      - default.conf:/etc/nginx/conf.d/default.conf:ro  # Mount custom Nginx configuration
-      - nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./default.conf:/etc/nginx/conf.d/default.conf:ro  # Mount custom Nginx configuration
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
     restart: always
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - "./prometheus.yml:/etc/prometheus/prometheus.yml"
+    networks:
+      local-dep:
+        ipv4_address: 172.19.0.9
+    ports:
+      - 9090:9090
+
+  nginx-exporter:
+    image: nginx/nginx-prometheus-exporter
+    container_name: nginx-exporter
+    networks:
+      local-dep:
+        ipv4_address: 172.19.0.10
+    ports:
+      - "9113:9113"
+    command: ["-nginx.scrape-uri", "http://192.168.100.100:80/metrics"]
 
 networks:
   local-dep:
