@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -7,8 +6,9 @@ import './bookshelf.jpg'
 
 export default function Home() {
   const [user, setUser] = useState({});
-
+  const [userRights, setUserRights] = useState(null);
   const [retrievals, setRetrievals] = useState([]);
+
   const [formData, setFormData] = useState({
     book_title: '',
     author: '',
@@ -16,18 +16,25 @@ export default function Home() {
     file_id: ''
   });
 
+  const [uploadFormData, setUploadFormData] = useState({
+    file: "",
+    title: "",
+    author: "",
+    genre: ""
+  });
+
 
   const handleDownload = (id) => {
     console.log('ID:', id);
     // Construct the download URL using the ID
-    const downloadUrl = `http://bs-be-dep:8000/items/${id}`;
-  
+    const downloadUrl = `http://192.168.100.100/items/${id}`;
+
     // Open the download URL in a new tab/window to trigger the download
     window.open(downloadUrl, '_blank');
-  
+
     // Log the download URL
     console.log('Download URL:', downloadUrl);
-  
+
     // If there's an error opening the download URL, log the error
     window.onerror = function(message, url, lineNumber) {
       console.error('Error downloading file:', message, 'at', url, 'line', lineNumber);
@@ -35,7 +42,7 @@ export default function Home() {
   };
 
   const fetchEntries = async () => {
-    const response = await axios.get("http://bs-be-dep:8000/items/");
+    const response = await axios.get("http://192.168.100.100/items/");
     setRetrievals(response.data)
     console.log('Retrievals:', response.data);
   };
@@ -44,12 +51,18 @@ export default function Home() {
     fetchEntries();
     // get token from local storage
     const auth_token = localStorage.getItem("auth_token");
+    console.log("token is ", auth_token)
     const auth_token_type = localStorage.getItem("auth_token_type");
+    console.log("token is ", auth_token_type)
+    const user_rights = localStorage.getItem("user_rights")
+    console.log("the rights are", user_rights)
+    setUserRights(user_rights)
+    console.log("userRights:", userRights);
     const token = auth_token_type + " " + auth_token;
 
     //  fetch data from get user api
     axios
-      .get("http://bs-be-dep:8000/users/", {
+      .get("http://192.168.100.100/users/", {
         headers: { Authorization: token },
       })
       .then((response) => {
@@ -60,6 +73,44 @@ export default function Home() {
         console.log(error);
       });
   }, []);
+
+  const onChangeForm = (fieldName, event) => {
+    setUploadFormData(prevState => ({
+      ...prevState,
+      [fieldName]: event.target.value
+    }));
+  };
+
+const onFileChange = (event) => {
+  setUploadFormData(prevState => ({
+    ...prevState,
+    file: event.target.files[0]
+  }));
+};
+
+const onSubmitForm = async () => {
+  try {
+    const formDataToSend = new FormData();
+    formDataToSend.append('input_file', uploadFormData.file);
+    formDataToSend.append('book_title', uploadFormData.title);
+    formDataToSend.append('author', uploadFormData.author);
+    formDataToSend.append('genre', uploadFormData.genre);
+
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    };
+
+    const response = await axios.post('http://192.168.100.100/items/', formDataToSend, config);
+    console.log(response.data);
+    // Handle success response
+  } catch (error) {
+    console.error('Error:', error);
+    // Handle error response
+  }
+};
+
 
   const onClickHandler = (event) => {
     event.preventDefault();
@@ -139,6 +190,59 @@ export default function Home() {
           </div>
         </div>
       </div>
-    </div>
-  );
+      {/* Conditional rendering of the button */}
+      {userRights === "true" && (
+        <div className="card w-1/3 mx-auto custom-card shadow-xl hover:shadow rounded-lg">
+          <div className="card-body text-center">
+            <div className="form-group">
+              <input
+                type="file"
+                accept=".pdf,.epub"
+                placeholder="File"
+                className="block text-sm py-2 px-3 rounded-lg w-96 border outline-none focus:ring focus:outline-none focus:ring-yellow-400 mx-auto"
+                onChange={onFileChange}
+              />
+            </div>
+            <div className="form-group">
+              <input
+                type="text"
+                placeholder="Book Title"
+                className="block text-sm py-2 px-3 rounded-lg w-96 border outline-none focus:ring focus:outline-none focus:ring-yellow-400 mx-auto"
+                onChange={(event) => {
+                  onChangeForm("title", event);
+                }}
+              />
+            </div>
+            <div className="form-group">
+              <input
+                type="text"
+                placeholder="Book Author"
+                className="block text-sm py-2 px-3 rounded-lg w-96 border outline-none focus:ring focus:outline-none focus:ring-yellow-400 mx-auto"
+                onChange={(event) => {
+                  onChangeForm("author", event);
+                }}
+              />
+            </div>
+            <div className="form-group">
+              <input
+                type="text"
+                placeholder="Book Genre"
+                className="block text-sm py-2 px-3 rounded-lg w-96 border outline-none focus:ring focus:outline-none focus:ring-yellow-400 mx-auto"
+                onChange={(event) => {
+                  onChangeForm("genre", event);
+                }}
+              />
+            </div>
+            <button
+              onClick={onSubmitForm}
+              className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            >
+              Upload
+            </button>
+          </div>
+      </div>
+      )}
+  </div>
+);
+
 }

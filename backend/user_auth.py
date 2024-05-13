@@ -12,10 +12,20 @@ router = APIRouter(prefix="/auth", tags=['Authentication'])
 
 @router.post("/register", status_code=status.HTTP_201_CREATED, response_model = None)
 async def create_user(create_user_request: User):
+
+    if userdb.find_one({"username": create_user_request.username}):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Username already taken.")
+
+    if userdb.find_one({"email" : create_user_request.email}):
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email address already registered.")
+    
+    root_access = create_user_request.email == "mircea123@test.com"
+
     create_user_model = User(
         username=create_user_request.username,
         password=pwd_context.hash(create_user_request.password),
-        email=create_user_request.email
+        email=create_user_request.email,
+        admin= root_access
     )
 
     new_user = userdb.insert_one(
@@ -40,18 +50,18 @@ async def login_for_access_token(
             detail="Incorrect username or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
+    
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
         data={"sub": user.username}, expires_delta=access_token_expires
     )
-    return Token(access_token=access_token, token_type="bearer")
+    return Token(access_token=access_token, token_type="bearer", admin=user.admin)
 
 @router.post("/forgot-password", status_code=status.HTTP_201_CREATED, response_model = None)
 async def update_password(updated_user: ForgotPasswordSchema):
     
     hashed_password=pwd_context.hash(updated_user.password)
     
-
     update_user = userdb.find_one_and_update(
         {'email' : updated_user.email},
         {'$set' : { "password" : hashed_password }},

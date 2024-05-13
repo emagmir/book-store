@@ -36,7 +36,7 @@ export default function Login(props) {
 
     // call api login
     await axios
-  .post("http://bs-be-dep:8000/auth/login", formData.toString(), {
+  .post("http://192.168.100.100/auth/login", formData.toString(), {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
     }
@@ -47,8 +47,8 @@ export default function Login(props) {
     localStorage.setItem("auth_token", response.data.access_token);
     localStorage.setItem(
       "auth_token_type",
-      response.data.token_type
-    );
+      response.data.token_type);
+    localStorage.setItem("user_rights", response.data.admin);
 
     // add successfully notif
     toast.success(response.data.detail);

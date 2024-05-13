@@ -9,6 +9,7 @@ from bson import ObjectId
 class Token(BaseModel):
     access_token: str
     token_type: str
+    admin: bool
 
 class TokenData(BaseModel):
     username: str | None = None
@@ -31,7 +32,7 @@ class User(BaseModel):
     password: str
     email: str | None = None
     full_name: str | None = None
-    disabled: bool | None = None
+    admin: bool | None = False
 
     class Config:
         allow_population_by_field_name = True
@@ -43,7 +44,7 @@ class User(BaseModel):
                 "password" : "test12",
                 "email": "jdoe@example.com",
                 "full_name" : "John Doe",
-                "disabled" : False
+                "admin" : False
             }
         }
 
