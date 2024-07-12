@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: bs-fe
-        image: emagmir/book-store-fe
+        image: emagmir/bs-fe-eks
         resources:
           limits:
             memory: "512Mi"

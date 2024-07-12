@@ -36,7 +36,7 @@ export default function Login(props) {
 
     // call api login
     await axios
-  .post("http://192.168.100.100/auth/login", formData.toString(), {
+  .post("http://api.kubemaster.netopsfusion.com/auth/login", formData.toString(), {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
     }

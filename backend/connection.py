@@ -1,13 +1,21 @@
 from pymongo import MongoClient
+import os
 
-# Specify the ClusterIP service name
-db_service_name = "192.168.100.100"
 
-# Specify the port defined in your service
-db_port = 27017
+secret_file_path = "/mnt/secrets-store/mongo_string"
+
+def get_secret():
+    with open(secret_file_path, 'r') as secret_file:
+        for line in secret_file:
+            key, value = line.strip().split('=', 1)
+            if key == 'MONGO_CONNECTION_STRING':
+                return value
+
+# Read the secret
+mongo_connection_string = get_secret()
 
 # Connect to the MongoDB service
-client = MongoClient(db_service_name, db_port)
+client = MongoClient(mongo_connection_string)
 
 # Access the databases and collections
 db1 = client.users

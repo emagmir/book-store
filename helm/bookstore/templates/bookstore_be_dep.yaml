@@ -14,9 +14,17 @@ spec:
       labels:
         app: bs-be-dep
     spec:
+      serviceAccountName: book-store-sa
+      volumes:
+      - name: secrets-store-inline
+        csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true
+          volumeAttributes:
+            secretProviderClass: "aws-secrets-class"
       containers:
       - name: bs-be
-        image: emagmir/book-store-be
+        image: emagmir/bs-be-eks
         resources:
           limits:
             memory: "128Mi"
@@ -24,6 +32,10 @@ spec:
         ports:
         - name: bs-be-port
           containerPort: 8000
+        volumeMounts:
+        - name: secrets-store-inline
+          mountPath: "/mnt/secrets-store"
+          readOnly: true
       tolerations:
       - key: "node-role.kubernetes.io/control-plane"
         effect: "NoSchedule"

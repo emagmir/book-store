@@ -10,7 +10,7 @@ resource "aws_security_group" "ssh_from_home" {
 
 resource "aws_vpc_security_group_ingress_rule" "allow_ssh_home" {
   security_group_id = aws_security_group.ssh_from_home.id
-  cidr_ipv4         = "my ip"
+  cidr_ipv4         = var.personal_ip #store the external IP addr of your machine as env variable
   from_port         = 22
   ip_protocol       = "tcp"
   to_port           = 22

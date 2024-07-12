@@ -27,7 +27,7 @@ terraform {
   }
 
   backend "s3" {
-    bucket = "tf-prod-api-state"
+    bucket = "book-store-tfstate"
     key    = "terraform.tfstate"
     region = "us-east-1"
   }
