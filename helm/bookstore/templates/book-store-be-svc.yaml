@@ -2,12 +2,13 @@ apiVersion: v1
 kind: Service
 metadata:
   name: bs-be-dep
+  namespace: default  # Make sure to specify the namespace if needed
 spec:
   selector:
     app: bs-be-dep
   ports:
-  - port: 8000
-    targetPort: bs-be-port
-    name: bs-be-svc
-    protocol: TCP
-  type: ClusterIP
+    - port: 80            # Port to be exposed by the service
+      targetPort: 8000      # Container port the service routes to
+      name: bs-be-svc
+      protocol: TCP
+  type: ClusterIP           # Default service type for internal communication
